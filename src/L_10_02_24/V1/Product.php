@@ -38,18 +38,6 @@ class Product
         return $this->getTitle() . ' ' . $this->getPrice() . ' ' . $this->getQuantity();
     }
 
-    public function saveFile(string $filePath): ?string
-    {
-        $data = $this->getId() . ', [' . \date('d-m-Y') . ']' . ' title: ' . $this->getTitle() . ', price: ' . $this->getPrice() . ', quantity: ' . $this->getQuantity() . "\n";
-        if (\file_exists($filePath)) {
-            $content = \file_get_contents($filePath);
-            $content .= $data;
-        }
-
-        $result = (bool)\file_put_contents($filePath, $content ?? $data);
-        return $result ? $data : null;
-    }
-
     public function calculate(array $products): int
     {
         // привести к пср
