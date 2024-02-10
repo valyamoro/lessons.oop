@@ -5,17 +5,15 @@ namespace App\L_10_02_24\V1;
 
 class ProductCalculate
 {
-    public function calculateTotalSum(array $products): array
+    public function calculateTotalSum(array $products): int
     {
         $sum = 0;
-        $result = [];
 
-        foreach ($products as $key => $product) {
+        foreach ($products as $product) {
             $sum += $product->getPrice() * $product->getQuantity();
-            $result[$key] = $sum;
         }
 
-        return $result;
+        return $sum;
     }
 
 }

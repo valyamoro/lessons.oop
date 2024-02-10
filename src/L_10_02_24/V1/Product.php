@@ -6,10 +6,10 @@ namespace App\L_10_02_24\V1;
 class Product
 {
     public function __construct(
-        private int $id,
-        private string $title,
-        private int $price,
-        private int $quantity,
+        private readonly int $id,
+        private readonly string $title,
+        private readonly int $price,
+        private readonly int $quantity,
     ) {
     }
 
