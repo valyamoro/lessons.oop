@@ -56,13 +56,15 @@ class ProductTest extends TestCase
         $product2 = new Product(2, 'Product 2', 1000, 1);
 
         $data = [
-            $product1,
-            $product2,
+            'product1' => $product1,
+            'product2' => $product2,
         ];
 
-        $result = $product2->calculate($data);
+        $calculate = new ProductCalculate();
+        $result = $calculate->calculateTotalSum($data);
 
-        $this->assertSame(2000, $result);
+        $this->assertSame(1000, $result['product1']);
+        $this->assertSame(2000, $result['product2']);
     }
 
 }

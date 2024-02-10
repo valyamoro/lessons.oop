@@ -38,16 +38,4 @@ class Product
         return $this->getTitle() . ' ' . $this->getPrice() . ' ' . $this->getQuantity();
     }
 
-    public function calculate(array $products): int
-    {
-        // привести к пср
-        $sum = 0;
-        // Массив объектов продукт
-        foreach ($products as $product) {
-            $sum += $product->getPrice() * $product->getQuantity();
-        }
-
-        return $sum;
-    }
-
 }
