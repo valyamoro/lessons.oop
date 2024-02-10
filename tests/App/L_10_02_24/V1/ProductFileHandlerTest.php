@@ -12,6 +12,12 @@ class ProductFileHandlerTest extends TestCase
         $filePath = __DIR__ . '/../../../../files/product2_test.txt';
         $fileHandler = new ProductFileHandler($filePath);
 
+        if ($fileHandler->isExists()) {
+            $fileHandler->remove();
+        }
+
+        $this->assertFileDoesNotExist($filePath);
+
         $product1 = new Product(1, 'Product 1', 500, 2);
         $product2 = new Product(2, 'Product 2', 1000, 1);
 
