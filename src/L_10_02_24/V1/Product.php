@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\L_10_02_24\V1;
 
-class Product
+abstract class Product
 {
     public function __construct(
         private readonly int $id,

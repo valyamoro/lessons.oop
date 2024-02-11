@@ -45,4 +45,22 @@ class ProductTest extends TestCase
         $this->assertSame(2000, $result);
     }
 
+    public function testCanCreateOrder(): void
+    {
+        $order = new Order();
+        $product1 = new Product(1, 'Product 1', 500, 2);
+        $product2 = new Product(2, 'Product 2', 1000, 1);
+        $order->add($product1);
+        $order->add($product2);
+
+        $result = $order->calculate();
+
+        $this->assertSame(2000, $result);
+    }
+
+    public function testCanCreateBookProductAndCdProduct(): void
+    {
+
+    }
+
 }
