@@ -13,4 +13,18 @@ final class ProductFactory
         return new ('App\L_10_02_24\V3\\' . $type . 'Product')(...$data);
     }
 
+    public static function createProducts(array $data): array
+    {
+        $result = [];
+
+        foreach ($data as $product) {
+            $type = $product['type'];
+            unset($product['type']);
+
+            $result[] = new ('App\L_10_02_24\V3\\' . $type . 'Product')(...$product);
+        }
+
+        return $result;
+    }
+
 }

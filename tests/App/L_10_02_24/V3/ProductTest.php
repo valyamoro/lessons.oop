@@ -2,8 +2,6 @@
 
 namespace App\L_10_02_24\V3;
 
-use App\L_10_02_24\V2\BookProduct;
-use App\L_10_02_24\V2\CDProduct;
 use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase
@@ -23,7 +21,7 @@ class ProductTest extends TestCase
         $data = ProductConverter::convertProduct($data);
         $result = ProductFactory::createProduct($data);
 
-        $this->assertInstanceOf(\App\L_10_02_24\V3\BookProduct::class, $result);
+        $this->assertInstanceOf(BookProduct::class, $result);
     }
 
     public function testCanCreateCD(): void
@@ -41,7 +39,44 @@ class ProductTest extends TestCase
         $data = ProductConverter::convertProduct($data);
         $result = ProductFactory::createProduct($data);
 
-        $this->assertInstanceOf(\App\L_10_02_24\V3\CDProduct::class, $result);
+        $this->assertInstanceOf(CDProduct::class, $result);
     }
 
+    public function testCanCreateProducts(): void
+    {
+        $data = [
+            [
+                'type' => 'cd',
+                'id' => '1',
+                'title' => 'book1',
+                'quantity' => '35',
+                'price' => '500',
+                'discount' => '350',
+                'length' => '156',
+            ],
+            [
+                'type' => 'book',
+                'id' => '1',
+                'title' => 'book1',
+                'quantity' => '35',
+                'price' => '500',
+                'discount' => '350',
+                'numPage' => '156',
+            ],
+        ];
+
+        $data = ProductConverter::convertProducts($data);
+        $result = ProductFactory::createProducts($data);
+        foreach ($result as $product) {
+            $this->assertInstanceOf(Product::class, $product);
+        }
+
+        foreach ($result as $product) {
+            if (BookProduct::class instanceof $product) {
+                $this->assertInstanceOf(BookProduct::class, $product);
+            } elseif (CDProduct::class instanceof $product) {
+                $this->assertInstanceOf(CDProduct::class, $product);
+            }
+        }
+    }
 }
