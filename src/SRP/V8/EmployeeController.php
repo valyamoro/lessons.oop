@@ -10,8 +10,9 @@ class EmployeeController
     ) {
     }
 
-    public function getResult(): array
+    public function getResult(string $type, array $data): array
     {
+        $this->service->make($type, $data);
         $result['pay'] = $this->service->calculatePay();
         $result['report'] = $this->service->reportHours();
         $result['db'] = $this->service->save();

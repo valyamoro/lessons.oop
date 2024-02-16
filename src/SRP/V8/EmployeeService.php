@@ -5,9 +5,15 @@ namespace App\SRP\V8;
 
 class EmployeeService
 {
-    public function __construct(
-        private readonly EmployeeModel $model,
-    ) {
+    private readonly EmployeeModel $model;
+
+    public function __construct()
+    {
+    }
+
+    public function make(string $type, array $data): void
+    {
+        $this->model = EmployeeFactory::factory($type, $data);
     }
 
     public function calculatePay(): int

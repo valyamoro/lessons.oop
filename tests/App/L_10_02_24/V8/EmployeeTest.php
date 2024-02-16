@@ -11,6 +11,9 @@ class EmployeeTest extends TestCase
 {
     public function testCanCreateEmployee(): void
     {
+        $service = new EmployeeService();
+        $controller = new EmployeeController($service);
+
         $type = 'staff';
         $data = [
             'number' => '022HX',
@@ -18,11 +21,7 @@ class EmployeeTest extends TestCase
             'email' => 'ivan@gmail.com',
         ];
 
-        $model = EmployeeFactory::factory($type, $data);
-        $service = new EmployeeService($model);
-        $controller = new EmployeeController($service);
-
-        $result = $controller->getResult();
+        $result = $controller->getResult($type, $data);
 
         $this->assertSame(678, $result['pay']);
         $this->assertSame(456, $result['report']);
