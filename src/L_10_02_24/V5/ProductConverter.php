@@ -22,7 +22,7 @@ class ProductConverter
         foreach ($data as $product) {
             $product = $this->make($product);
             $type = $product['type'];
-            $result[] = $this->factory->factory(\array_diff_key($product, ['type']), $type);
+            $result[] = $this->factory->factory($this->castToType(\array_diff_key($product, ['type' => 0])), $type);
         }
 
         return $result;
@@ -32,7 +32,6 @@ class ProductConverter
     {
         $values = [];
 
-        var_dump('hello!!');
         if ($item['type'] === PRODUCT_TYPE::TYPE_BOOK) {
             $values = \array_values(\array_diff(\array_keys($item), ['length', 'lampa']));
             $item = \array_diff_key($item, ['length' => 0]);
@@ -42,27 +41,8 @@ class ProductConverter
         } elseif ($item['type'] === PRODUCT_TYPE::TYPE_LAMPA) {
             $values = $this->arrayDiff($item, ['num_pages', 'length']);
             $item = \array_diff_key($item, ['num_pages' => 0, 'length' => 0]);
-
         }
 
-//        return $item;
-//       $result = \array_map(function ($key) {
-//            return $key;
-//        }, $item);
-
-//        \array_walk($item, function ($value, $key) {
-//            if ($key === self::TYPE_LAMPA) {
-//                unset($item[$key]);
-//            }
-//        });
-
-//        $this->item = $item;
-//        $result = \array_map(function ($value, $key) {
-//            if ($key === self::TYPE_LAMPA) {
-//                return $this->arrayDiff($this->item, $value);
-//            }
-//        }, $item, array_keys($item));
-//        return $item;
         return \array_combine($values, \array_values($item));
     }
 
@@ -71,31 +51,28 @@ class ProductConverter
         return \array_values(\array_diff(\array_keys($item), $array));
     }
 
-//    private function castToType(array $array): array
-//    {
-//        $fields = [
-//            'id' => 'int',
-//            'type' => 'string',
-//            'quantity' => 'int',
-//            'price' => 'float',
-//            'discount' => 'int',
-//            'num_pages' => 'int',
-//            'length' => 'int',
-//        ];
-//
-//        $result = [];
-//
-//        foreach ($arr as $key => $value) {
-//            if (isset($fields[$key])) {
-//                foreach ($fields as $key2 => $value2) {
-//                    if ($key === $key2) {
-//                        $result[$key] = ($value2)$value;
-//                    }
-//                }
-//            }
-//        }
-//
-//        return $result;
-//    }
-    
+    private function castToType(array $array): array
+    {
+        $fields = [
+            'id' => 'int',
+            'type' => 'string',
+            'quantity' => 'int',
+            'price' => 'float',
+            'discount' => 'int',
+            'num_pages' => 'int',
+            'length' => 'int',
+        ];
+
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            $result[$key] = match($key) {
+                'id', 'price', 'quantity', 'discount', 'num_pages', 'length' => (int)$value,
+                'title' => $value,
+            };
+        }
+
+        return $result;
+    }
+
 }

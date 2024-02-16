@@ -20,8 +20,6 @@ class ProductConverterTest extends TestCase
 //            'length' => '34',
 //            'num_pages' => '33'
 //        ];
-        $data = [1, 2, 3];
-        print_r($data);
 
         $factory = new ProductFactory();
         $converter = new \App\L_10_02_24\V5\ProductConverter($factory);
@@ -71,36 +69,6 @@ class ProductConverterTest extends TestCase
 
     public function testCanCreateProductConverterToProduct(): void
     {
-        $data = [
-            [
-                'id' => 1,
-                'type' => 'book',
-                'title' => 'Product title 1',
-                'quantity' => 1,
-                'price' => 500,
-                'discount' => 0,
-                'num_page' => 450,
-            ],
-            [
-                'id' => '2',
-                'type' => 'cd',
-                'title' => 'Product title 2',
-                'quantity' => '1',
-                'price' => '1500',
-                'discount' => '0',
-                'length' => '1',
-            ],
-            [
-                'id' => '3',
-                'type' => 'book',
-                'title' => 'Product title 3',
-                'quantity' => '1',
-                'price' => '2000',
-                'discount' => '0',
-                'num_page' => ''
-            ],
-        ];
-
         $converter = new ProductConverter();
 
         $expected = [

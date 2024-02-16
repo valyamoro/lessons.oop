@@ -9,9 +9,9 @@ use App\L_10_02_24\V1\Product;
 
 class ProductFactory
 {
-    public function factory(array $array, string $type): Product
+    public function factory(array $array): Product
     {
-        return match ($type) {
+        return match ($array['type']) {
             PRODUCT_TYPE::TYPE_BOOK => new BookProduct(...$array),
             PRODUCT_TYPE::TYPE_CD => new CDProduct(...$array),
         };
