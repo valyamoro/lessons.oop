@@ -2,9 +2,6 @@
 
 namespace App\L_10_02_24\V8;
 
-use App\SRP\V8\EmployeeController;
-use App\SRP\V8\EmployeeFactory;
-use App\SRP\V8\EmployeeService;
 use PHPUnit\Framework\TestCase;
 
 class EmployeeTest extends TestCase
