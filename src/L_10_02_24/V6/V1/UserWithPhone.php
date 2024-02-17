@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\L_10_02_24\V6;
+namespace App\L_10_02_24\V6\V1;
 
 class UserWithPhone extends User
 {
@@ -9,14 +9,14 @@ class UserWithPhone extends User
     public function __construct(
         string $username,
         string $email,
-        private readonly string $phone,
+        private readonly string $phoneNumber,
     ) {
         parent::__construct($username, $email);
     }
 
-    public function getPhone(): string
+    public function getPhoneNumber(): string
     {
-        return $this->phone;
+        return $this->phoneNumber;
     }
 
 }
