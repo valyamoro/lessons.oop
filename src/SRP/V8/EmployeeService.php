@@ -11,22 +11,35 @@ class EmployeeService
     {
     }
 
-    public function make(string $type, array $data): void
+    public function getSomething(string $type, array $data): array
+    {
+        if (!empty($data)) {
+            $this->make($type, $data);
+        }
+
+        $result['pay'] = $this->calculatePay();
+        $result['report'] = $this->reportHours();
+        $result['db'] = $this->save();
+
+        return $result;
+    }
+
+    private function make(string $type, array $data): void
     {
         $this->model = EmployeeFactory::factory($type, $data);
     }
 
-    public function calculatePay(): int
+    private function calculatePay(): int
     {
         return $this->model->calculatePay();
     }
 
-    public function reportHours(): int
+    private function reportHours(): int
     {
         return $this->model->reportHours();
     }
 
-    public function save(): bool
+    private function save(): bool
     {
         return $this->model->save();
     }
