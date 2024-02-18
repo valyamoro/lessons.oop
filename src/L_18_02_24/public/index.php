@@ -2,21 +2,15 @@
 declare(strict_types=1);
 error_reporting(-1);
 \session_start();
-function dump(array $value): void
-{
-    echo '<pre>';
-    print_r($value);
-    echo '<pre>';
-}
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 if (!empty($_POST)) {
     $data = [
-        'product_id' => 1,
-        'from_warehouse_id' => 2,
-        'to_warehouse_id' => 1,
-        'quantity' => 1,
+        'product_id' => (int)$_GET['product_id'],
+        'from_warehouse_id' => (int)$_GET['warehouse_id'],
+        'to_warehouse_id' => (int)$_POST['warehouse'],
+        'quantity' => (int)$_POST['quantity'],
     ];
 
     $serviceMovingProduct = new App\L_18_02_24\Services\ProductMoving\ProductMovingService(new App\L_18_02_24\Services\ProductMoving\Repositories\ProductMovingRepository);
@@ -33,6 +27,27 @@ $result = $serviceHome->getAll();
 
 $warehouses = $serviceHome->getWarehouses();
 ?>
+
+<?php if (!empty($_GET['product_id']) && !empty($_GET['warehouse_id'])): ?>
+    <form action="" method="POST">
+        <div class="modal-body">
+            <select name="warehouse" id="warehouse">
+                <?php foreach ($warehouses as $value): ?>
+                    <option value="<?php echo $value['id'] ?>">
+                        <?php echo $value['name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <label for="quantity" class="form-label">Количество</label>
+        <input name="quantity" class="form-control" id="quantity" aria-describedby="quantity">
+        <button type="submit" name="product_id" value="<?php echo $_GET['product_id']; ?>" class="btn btn-primary">
+            Переместить
+        </button>
+    </form>
+<?php endif; ?>
+
 
 <!doctype html>
 <html lang="ru">
@@ -52,33 +67,6 @@ $warehouses = $serviceHome->getWarehouses();
 <link rel="stylesheet" href="../assets/css/modal.css">
 <script src="../assets/js/modal.js"></script>
 </body>
-<body>
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close">&times;</span>
-            <h2>Переместить продукт</h2>
-        </div>
-        <form action="" method="POST">
-            <div class="modal-body">
-                <select name="warehouse" id="warehouse">
-                    <?php foreach ($warehouses as $value): ?>
-                        <option value="<?php echo $value['id'] ?>">
-                            <?php echo $value['name'] ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <label for="quantity" class="form-label">Количество</label>
-            <input name="quantity" class="form-control" id="quantity" aria-describedby="quantity">
-            <button type="submit" name="product_id" value="<?php echo $_GET['product_id']; ?>" class="btn btn-primary">Переместить</button>
-        </form>
-    </div>
-</div>
-
-</body>
-<body>
-
 <table class="table">
     <?php ?>
     <thead>
@@ -100,10 +88,11 @@ $warehouses = $serviceHome->getWarehouses();
             <td><?php echo $value['price']; ?> </td>
             <td><?php echo $value['quantity']; ?> </td>
             <td>
-                <a href="?product_id=<?php echo $value['id']; ?>"><button id="myBtn">Переместить продукт</button></a>
+                <a href="?product_id=<?php echo "{$value['id']}&warehouse_id={$value['warehouse_id']}"; ?>">
+                    <button id="myBtn">Переместить продукт</button>
+                </a>
             </td>
         </tr>
-
     <?php endforeach; ?>
     </tbody>
 </table>
