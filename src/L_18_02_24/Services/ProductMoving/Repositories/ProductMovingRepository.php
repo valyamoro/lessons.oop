@@ -8,13 +8,14 @@ use App\L_18_02_24\Services\BaseRepository;
 
 class ProductMovingRepository extends BaseRepository
 {
-    public function getQuantityNowWareHouse(int $productId, int $wareHouseId): ?int
+    public function getQuantityNowWareHouse(int $productId, int $wareHouseId): int
     {
         $query = 'select quantity from product_warehouse where product_id=? and warehouse_id=?';
 
         $this->connection->prepare($query)->execute([$productId, $wareHouseId]);
 
-        return $this->connection->fetch()['quantity'];
+        $result = $this->connection->fetch();
+        return empty($result) ? 0 : $result['quantity'];
     }
     public function isExistsWareHouseWithProduct(int $productId, int $wareHouseId): bool
     {

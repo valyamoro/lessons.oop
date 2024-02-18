@@ -11,16 +11,15 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 $data = [
     'product_id' => 2,
-    'from_warehouse_id' => 6,
-    'to_warehouse_id' => 10,
-    'quantity' => 1,
+    'from_warehouse_id' => 44,
+    'to_warehouse_id' => 33,
+    'quantity' => 2,
 ];
 
 $serviceMovingProduct = new ProductMovingService(new ProductMovingRepository);
 $data = $serviceMovingProduct->movingProduct($data);
 
 if (!empty($data)) {
-    die;
     $serviceLogHistoryProductMoving = new \App\L_18_02_24\Services\LogHistoryProductMoving\LogHistoryProductMovingService(new \App\L_18_02_24\Services\LogHistoryProductMoving\Repositories\LogHistoryProductMovingRepository());
     $serviceLogHistoryProductMoving->addHistoryProductData($data);
 } else {

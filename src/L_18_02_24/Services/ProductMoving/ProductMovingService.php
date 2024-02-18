@@ -29,7 +29,7 @@ class ProductMovingService extends BaseService
                 if ($data['quantity'] <= 0) {
                     $_SESSION['errors']['quantity'] = 'Количество товаров не может быть меньше или равно нулю!' . "\n";
                 } else {
-                    $quantityNowWareHouse = $this->repository->getQuantityNowWareHouse($data['product_id'], $data['from_warehouse_id']);
+                    $quantityNowWareHouse = $this->repository->getQuantityNowWareHouse($data['product_id'], $data['to_warehouse_id']);
                     if ($this->repository->isExistsWareHouseWithProduct($model->getId(), $model->getIdWareHouse())) {
                         $isAdd = false;
                         $currentQuantity = $quantityNowWareHouse + $data['quantity'];
