@@ -1,9 +1,8 @@
 {
   "autoload": {
     "psr-4": {
-      "App\\": "src"
+      "App\\": "App"
     },
-    "files": ["src/L_18_02_24/core/Helpers/helpers.php"]
   },
   "require": {
     "ext-pdo": "*",

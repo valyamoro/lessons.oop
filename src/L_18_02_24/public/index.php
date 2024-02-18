@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-error_reporting(-1);
+\error_reporting(-1);
 \session_start();
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
@@ -26,6 +26,7 @@ $serviceHome = new App\L_18_02_24\Services\Home\HomeService(new \App\L_18_02_24\
 $result = $serviceHome->getAll();
 
 $warehouses = $serviceHome->getWarehouses();
+
 ?>
 
 <?php if (!empty($_GET['product_id']) && !empty($_GET['warehouse_id'])): ?>
@@ -47,7 +48,6 @@ $warehouses = $serviceHome->getWarehouses();
         </button>
     </form>
 <?php endif; ?>
-
 
 <!doctype html>
 <html lang="ru">
@@ -96,7 +96,6 @@ $warehouses = $serviceHome->getWarehouses();
     <?php endforeach; ?>
     </tbody>
 </table>
-</body>
 
 <h3>История перемещений:</h3>
 <table class="table">
@@ -120,24 +119,3 @@ $warehouses = $serviceHome->getWarehouses();
     <?php endforeach; ?>
     </tbody>
 </table>
-<script>
-    let modal = document.getElementById("myModal");
-
-    let btn = document.getElementById("myBtn");
-
-    let span = document.getElementsByClassName("close")[0];
-
-    btn.onclick = function () {
-        modal.style.display = "block";
-    }
-
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function (event) {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
