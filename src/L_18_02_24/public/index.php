@@ -30,7 +30,8 @@ if (!empty($_POST)) {
 
 $serviceHome = new App\L_18_02_24\Services\Home\HomeService(new \App\L_18_02_24\Services\Home\Repositories\HomeRepository());
 $result = $serviceHome->getAll();
-//dump($result);
+
+$warehouses = $serviceHome->getWarehouses();
 ?>
 
 <!doctype html>
@@ -45,7 +46,36 @@ $result = $serviceHome->getAll();
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+</script>
+
+<link rel="stylesheet" href="../assets/css/modal.css">
+<script src="../assets/js/modal.js"></script>
+</body>
+<body>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Переместить продукт</h2>
+        </div>
+        <form action="" method="POST">
+            <div class="modal-body">
+                <select name="warehouse" id="warehouse">
+                    <?php foreach ($warehouses as $value): ?>
+                        <option value="<?php echo $value['id'] ?>">
+                            <?php echo $value['name'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <label for="quantity" class="form-label">Количество</label>
+            <input name="quantity" class="form-control" id="quantity" aria-describedby="quantity">
+            <button type="submit" name="product_id" value="<?php echo $_GET['product_id']; ?>" class="btn btn-primary">Переместить</button>
+        </form>
+    </div>
+</div>
+
 </body>
 <body>
 
@@ -56,7 +86,9 @@ $result = $serviceHome->getAll();
         <th scope="col">Айди продукта</th>
         <th scope="col">Название продукта</th>
         <th scope="col">Название склада</th>
+        <th scope="col">Цена</th>
         <th scope="col">Количество</th>
+        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -65,8 +97,13 @@ $result = $serviceHome->getAll();
             <td><?php echo $value['id'] ?></td>
             <td><?php echo $value['title'] ?></td>
             <td><?php echo $value['name'] ?></td>
+            <td><?php echo $value['price']; ?> </td>
             <td><?php echo $value['quantity']; ?> </td>
+            <td>
+                <a href="?product_id=<?php echo $value['id']; ?>"><button id="myBtn">Переместить продукт</button></a>
+            </td>
         </tr>
+
     <?php endforeach; ?>
     </tbody>
 </table>
@@ -87,16 +124,31 @@ $result = $serviceHome->getAll();
             <td><?php echo $product['id'] ?></td>
             <?php foreach ($result['history_moving'] as $value): ?>
                 <?php if ($value['product_id'] === $product['id']): ?>
-                    <td><?php echo $value['description'] ?> </td>
+                    <td><?php echo $value['description'] . "\n" ?> </td>
                 <?php endif; ?>
             <?php endforeach; ?>
         </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
-</body>
+<script>
+    let modal = document.getElementById("myModal");
 
-</html>
+    let btn = document.getElementById("myBtn");
 
+    let span = document.getElementsByClassName("close")[0];
 
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
 
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>

@@ -15,4 +15,9 @@ class HomeService extends BaseService
         return $result;
     }
 
+    public function getWarehouses(): array
+    {
+        return $this->repository->getWareHouses();
+    }
+
 }
