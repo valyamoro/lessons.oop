@@ -2,6 +2,12 @@
 declare(strict_types=1);
 error_reporting(-1);
 \session_start();
+function dump(array $value): void
+{
+    echo '<pre>';
+    print_r($value);
+    echo '<pre>';
+}
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -24,7 +30,7 @@ if (!empty($_POST)) {
 
 $serviceHome = new App\L_18_02_24\Services\Home\HomeService(new \App\L_18_02_24\Services\Home\Repositories\HomeRepository());
 $result = $serviceHome->getAll();
-
+//dump($result);
 ?>
 
 <!doctype html>
@@ -65,6 +71,31 @@ $result = $serviceHome->getAll();
     </tbody>
 </table>
 </body>
+
+<h3>История перемещений:</h3>
+<table class="table">
+    <?php ?>
+    <thead>
+    <tr>
+        <th scope="col">Айди продукта</th>
+        <th scope="col">История</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($result['products'] as $product): ?>
+        <tr>
+            <td><?php echo $product['id'] ?></td>
+            <?php foreach ($result['history_moving'] as $value): ?>
+                <?php if ($value['product_id'] === $product['id']): ?>
+                    <td><?php echo $value['description'] ?> </td>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+</body>
+
 </html>
 
 
