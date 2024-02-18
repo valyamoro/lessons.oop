@@ -29,36 +29,36 @@ class ProductMovingService extends BaseService
                 if ($data['quantity'] <= 0) {
                     $_SESSION['errors']['quantity'] = 'Количество товаров не может быть меньше или равно нулю!' . "\n";
                 } else {
-                    $quantityNowWareHouse = $this->repository->getQuantityNowWareHouse($data['product_id'], $data['to_warehouse_id']);
+                    $quantityCurrentNowWareHouse = $this->repository->getQuantityWareHouse($data['product_id'], $data['to_warehouse_id']);
                     if ($this->repository->isExistsWareHouseWithProduct($model->getId(), $model->getIdWareHouse())) {
                         $isAdd = false;
-                        $currentQuantity = $quantityNowWareHouse + $data['quantity'];
+                        $quantityCurrentWareHouse = $quantityCurrentNowWareHouse + $data['quantity'];
                     } else {
                         $isAdd = true;
-                        $currentQuantity = $quantityPastWareHouse - $data['quantity'];
+                        $quantityCurrentWareHouse = $quantityPastWareHouse - $data['quantity'];
                     }
 
                     $result['product_title'] = $productData['title'];
                     $result['now_warehouse_id'] = $productData['warehouse_id'];
                     $result['past_warehouse_id'] = $data['from_warehouse_id'];
-                    $result['past_quantity_now_warehouse'] = $quantityNowWareHouse;
-                    $result['past_quantity_past_warehouse'] = $data['quantity'];
+                    $result['past_quantity_now_warehouse'] = $quantityCurrentNowWareHouse;
+                    $result['past_quantity_past_warehouse'] = $this->repository->getQuantityWareHouse($data['product_id'], $data['from_warehouse_id']);
                     $result['now_quantity_past_warehouse'] = $quantityPastWareHouse - $data['quantity'];
-                    $result['now_quantity_now_warehouse'] = $currentQuantity;
-                    $result['now_quantity'] = $currentQuantity;
-                    $result['moving_quantity'] = $model->getQuantity();
+                    $result['now_quantity_now_warehouse'] = $this->repository->getQuantityWareHouse($data['product_id'], $data['from_warehouse_id']);
+                    $result['now_quantity'] = $quantityCurrentWareHouse;
+                    $result['moving_quantity'] = $productData['quantity'];
 
-                    if ($currentQuantity < 0) {
+                    if ($quantityCurrentWareHouse < 0) {
                         $_SESSION['errors']['quantity'] = 'На складе нет этого товара с таким количеством!' . "\n";
                     } else {
                         if (!$isAdd) {
-                            $this->repository->updateProduct($currentQuantity, $model->getId(), $data['to_warehouse_id']);
+                            $this->repository->updateProduct($quantityCurrentWareHouse, $model->getId(), $data['to_warehouse_id']);
                             $this->repository->deleteProduct($model->getId(), $data['from_warehouse_id']);
                         } else {
-                            if ($currentQuantity === 0) {
+                            if ($quantityCurrentWareHouse === 0) {
                                 $this->repository->deleteProduct($model->getId(), $data['from_warehouse_id']);
                             } else {
-                                $this->repository->updateProduct($currentQuantity, $model->getId(), $data['from_warehouse_id']);
+                                $this->repository->updateProduct($quantityCurrentWareHouse, $model->getId(), $data['from_warehouse_id']);
                             }
 
                             $this->repository->addProduct($model);

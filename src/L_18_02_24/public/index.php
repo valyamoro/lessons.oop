@@ -1,22 +1,18 @@
 <?php
 declare(strict_types=1);
-
-use App\L_18_02_24\Services\ProductMoving\ProductMovingService;
-use App\L_18_02_24\Services\ProductMoving\Repositories\ProductMovingRepository;
-
 error_reporting(-1);
 \session_start();
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 $data = [
-    'product_id' => 2,
-    'from_warehouse_id' => 44,
-    'to_warehouse_id' => 33,
-    'quantity' => 2,
+    'product_id' => 1,
+    'from_warehouse_id' => 1,
+    'to_warehouse_id' => 2,
+    'quantity' => 25,
 ];
 
-$serviceMovingProduct = new ProductMovingService(new ProductMovingRepository);
+$serviceMovingProduct = new App\L_18_02_24\Services\ProductMoving\ProductMovingService(new App\L_18_02_24\Services\ProductMoving\Repositories\ProductMovingRepository);
 $data = $serviceMovingProduct->movingProduct($data);
 
 if (!empty($data)) {
