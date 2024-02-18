@@ -8,7 +8,7 @@ use App\L_18_02_24\Services\BaseRepository;
 
 class ProductMovingRepository extends BaseRepository
 {
-    public function getQuantityNowWareHouse(int $productId, int $wareHouseId): int
+    public function getQuantityNowWareHouse(int $productId, int $wareHouseId): ?int
     {
         $query = 'select quantity from product_warehouse where product_id=? and warehouse_id=?';
 
