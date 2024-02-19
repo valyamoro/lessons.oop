@@ -28,7 +28,7 @@ class HomeRepository extends BaseRepository
         return $this->connection->fetchAll();
     }
 
-    public function getAllHistoryMoving(): array
+    public function getAllHistoryMovingProducts(): array
     {
         $query = 'select * from history_product_moving';
 

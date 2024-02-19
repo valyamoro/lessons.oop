@@ -24,7 +24,8 @@ if (!empty($_POST)) {
 }
 
 $serviceHome = new App\L_18_02_24\Services\Home\HomeService(new \App\L_18_02_24\Services\Home\Repositories\HomeRepository());
-$result = $serviceHome->getAll();
+$products = $serviceHome->getAllProducts();
+$historyMovingProducts = $serviceHome->getHistoryMovingProducts();
 
 $warehouses = $serviceHome->getWarehouses();
 
@@ -81,7 +82,7 @@ $warehouses = $serviceHome->getWarehouses();
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($result['products'] as $value): ?>
+    <?php foreach ($products as $value): ?>
         <tr>
             <td><?php echo $value['id'] ?></td>
             <td><?php echo $value['title'] ?></td>
@@ -98,39 +99,23 @@ $warehouses = $serviceHome->getWarehouses();
     </tbody>
 </table>
 
-<h3>История перемещений:</h3>
-<table class="table">
-    <?php ?>
-    <thead>
-    <tr>
-        <th scope="col">Айди продукта</th>
-        <th scope="col">История</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php
-
-    $uniqueIds = [];
-
-    $result['products'] = array_filter($result['products'], function($item) use (&$uniqueIds) {
-        if (!in_array($item['id'], $uniqueIds)) {
-            $uniqueIds[] = $item['id'];
-            return true;
-        }
-
-        return false;
-    });
-
-    ?>
-    <?php foreach ($result['products'] as $product): ?>
+<?php if ($historyMovingProducts !== []): ?>
+    <h3>История перемещений:</h3>
+    <table class="table">
+        <?php ?>
+        <thead>
         <tr>
-            <td><?php echo $product['id'] ?></td>
-            <?php foreach ($result['history_moving'] as $value): ?>
-                <?php if ($value['product_id'] === $product['id']): ?>
-                    <td><?php echo $value['description'] . "\n" ?> </td>
-                <?php endif; ?>
-            <?php endforeach; ?>
+            <th scope="col">Айди продукта</th>
+            <th scope="col">История</th>
         </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <?php foreach ($historyMovingProducts as $value): ?>
+            <tr>
+                <td><?php echo $value['product_id'] ?></td>
+                <td><?php echo $value['description'] . "\n" ?> </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
