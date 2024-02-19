@@ -7,7 +7,6 @@ use App\L_18_02_24\core\Model;
 
 class BaseService
 {
-    protected Model $model;
     public function __construct(protected BaseRepository $repository)
     {
 

@@ -25,4 +25,14 @@ class BaseRepository
         return new PDODriver($dataBasePDOConnection->connection());
     }
 
+    public function getQuantityWareHouse(int $productId, int $wareHouseId): int
+    {
+        $query = 'select quantity from product_warehouse where product_id=? and warehouse_id=?';
+
+        $this->connection->prepare($query)->execute([$productId, $wareHouseId]);
+
+        $result = $this->connection->fetch();
+        return empty($result) ? 0 : $result['quantity'];
+    }
+
 }

@@ -9,12 +9,14 @@ class LogHistoryProductMovingService extends BaseService
 {
     public function formatToInfoAboutMovingProduct(array $data): string
     {
-        $data['past_warehouse_title'] = $this->repository->getWareHouseTitleById($data['past_warehouse_id']);
-        $data['now_warehouse_title'] = $this->repository->getWareHouseTitleById($data['now_warehouse_id']);
+        $data['from_warehouse_now_quantity'] = $this->repository->getQuantityWareHouse($data['product_id'], $data['from_warehouse_id']);
+        $data['to_warehouse_now_quantity'] = $this->repository->getQuantityWareHouse($data['product_id'], $data['to_warehouse_id']);
+        $data['from_warehouse_title'] = $this->repository->getWareHouseTitleById($data['from_warehouse_id']);
+        $data['to_warehouse_title'] = $this->repository->getWareHouseTitleById($data['to_warehouse_id']);
+        $data['product_title'] = $this->repository->getProductTitleById((int)$data['product_id']);
 
-        $string = "{$data['past_warehouse_title']} {$data['product_title']} был {$data['past_quantity_past_warehouse']} стало {$data['now_quantity_past_warehouse']}\n";
-
-        $string .= "{$data['now_warehouse_title']} {$data['product_title']} было {$data['past_quantity_now_warehouse']} перемещено {$data['moving_quantity']} стало {$data['now_quantity']}";
+        $string = "{$data['from_warehouse_title']} {$data['product_title']} был {$data['from_warehouse_past_quantity']} стало {$data['from_warehouse_now_quantity']}\n";
+        $string .= "{$data['to_warehouse_title']} {$data['product_title']} было {$data['to_warehouse_past_quantity']} перемещено {$data['moving_quantity']} стало {$data['to_warehouse_now_quantity']}";
 
         return $string;
     }
@@ -22,7 +24,7 @@ class LogHistoryProductMovingService extends BaseService
     public function addHistoryProductData(array $data): void
     {
         $result = $this->formatToInfoAboutMovingProduct($data);
-        $this->repository->addHistoryProductMoving($this->repository->getProductIdByTitle($data['product_title']), $result);
+        $this->repository->addHistoryProductMoving($data['product_id'], $result);
     }
 
 }

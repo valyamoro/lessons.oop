@@ -7,13 +7,13 @@ use App\L_18_02_24\Services\BaseRepository;
 
 class LogHistoryProductMovingRepository extends BaseRepository
 {
-    public function getProductIdByTitle(string $data): int
+    public function getProductTitleById(int $id): string
     {
-        $query = 'select id from products where title=?';
+        $query = 'select title from products where id=?';
 
-        $this->connection->prepare($query)->execute([$data]);
+        $this->connection->prepare($query)->execute([$id]);
 
-        return (int)$this->connection->fetch()['id'];
+        return $this->connection->fetch()['title'];
     }
 
     public function getWareHouseTitleById(int $id): string

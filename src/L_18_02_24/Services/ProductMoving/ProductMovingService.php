@@ -10,22 +10,19 @@ class ProductMovingService extends BaseService
 {
     public function movingProduct(array $data): array
     {
-        $result = [];
         $fromWareHouseProductData = $this->repository->getProductData((int)$data['product_id'], (int)$data['from_warehouse_id']);
         $toWareHouseProductData = $this->repository->getProductData((int)$data['product_id'], (int)$data['to_warehouse_id']);
-
-        $quantityProductToWareHouse = $this->repository->getQuantityWareHouse($data['product_id'], $data['to_warehouse_id']);
-        $quantityProductFromWareHouse = $this->repository->getQuantityWareHouse($data['product_id'], $data['from_warehouse_id']);
-
         if (empty($toWareHouseProductData)) {
             $isAdd = true;
-            $quantityCurrentWareHouse = $quantityProductFromWareHouse - $data['quantity'];
+            $quantityProductFromWareHouse = $this->repository->getQuantityWareHouse($data['product_id'], $data['from_warehouse_id']);
+            $quantityCurrentWareHouse = $quantityProductFromWareHouse - $data['moving_quantity'];
         } else {
             $isAdd = false;
-            $quantityCurrentWareHouse = $quantityProductToWareHouse + $data['quantity'];
+            $quantityProductToWareHouse = $this->repository->getQuantityWareHouse($data['product_id'], $data['to_warehouse_id']);
+            $quantityCurrentWareHouse = $quantityProductToWareHouse + $data['moving_quantity'];
         }
 
-        if ($data['quantity'] <= 0) {
+        if ($data['moving_quantity'] <= 0) {
             $_SESSION['errors']['quantity'] = 'Количество товаров не может быть меньше или равно нулю!' . "\n";
         } else {
             if ($quantityCurrentWareHouse < 0) {
@@ -41,46 +38,14 @@ class ProductMovingService extends BaseService
                         $this->repository->updateProduct($quantityCurrentWareHouse, $data['product_id'], $data['from_warehouse_id']);
                     }
 
-                    $this->repository->addProduct($data['product_id'], $data['to_warehouse_id'], $data['quantity']);
+                    $this->repository->addProduct($data['product_id'], $data['to_warehouse_id'], $data['moving_quantity']);
                 }
             }
         }
 
-//        $result['to_warehouse_id'] = $data['to_warehouse_id'];
-//        $result['from_warehouse_id'] = $data['from_warehouse_id'];
-//        $result['moving_quantity'] = $productData['quantity'];
-//
-//
-//        $result['now_quantity_past_warehouse'] = $quantityPastWareHouse - $data['quantity'];
-//        $result['now_quantity_now_warehouse'] = $this->repository->getQuantityWareHouse($data['product_id'], $data['from_warehouse_id']);
-//
-//        $result['past_quantity_to_warehouse'] = $quantityCurrentNowWareHouse; // ?
-//        $result['past_quantity_from_warehouse'] = $this->repository->getQuantityWareHouse($data['product_id'], $data['from_warehouse_id']);
-//
-//        $result['now_quantity'] = $quantityCurrentWareHouse;
-
-        return $result;
-    }
-
-    private function initProductModel(array $data): ProductModel
-    {
-        $model = new ProductModel(...($this->formatData($data)));
-        $model->validator->setRules($model->rules());
-        if (false === $model->validator->validate($model)) {
-            $_SESSION['errors'] = $model->validator->errors;
-            die;
-        }
-
-        return $model;
-    }
-
-    private function formatData(array $data): array
-    {
         return [
-            'productId' => (int)$data['product_id'],
-            'fromWareHouseId' => (int)$data['from_warehouse_id'],
-            'toWareHouseId' => (int)$data['to_warehouse_id'],
-            'quantity' => (int)$data['quantity'],
+            'from_warehouse_past_quantity' => $fromWareHouseProductData['quantity'],
+            'to_warehouse_past_quantity' => empty($toWareHouseProductData['quantity']) ? 0 : $toWareHouseProductData['quantity'],
         ];
     }
 

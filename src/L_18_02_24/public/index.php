@@ -10,12 +10,13 @@ if (!empty($_POST)) {
         'product_id' => (int)$_GET['product_id'],
         'from_warehouse_id' => (int)$_GET['warehouse_id'],
         'to_warehouse_id' => (int)$_POST['warehouse'],
-        'quantity' => (int)$_POST['quantity'],
+        'moving_quantity' => (int)$_POST['quantity'],
     ];
 
     $serviceMovingProduct = new App\L_18_02_24\Services\ProductMoving\ProductMovingService(new App\L_18_02_24\Services\ProductMoving\Repositories\ProductMovingRepository);
-    $data = $serviceMovingProduct->movingProduct($data);
+    $result = $serviceMovingProduct->movingProduct($data);
 
+    $data = [...$result, ...$data];
     if (!empty($data)) {
         $serviceLogHistoryProductMoving = new \App\L_18_02_24\Services\LogHistoryProductMoving\LogHistoryProductMovingService(new \App\L_18_02_24\Services\LogHistoryProductMoving\Repositories\LogHistoryProductMovingRepository());
         $serviceLogHistoryProductMoving->addHistoryProductData($data);
