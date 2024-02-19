@@ -107,6 +107,20 @@ $warehouses = $serviceHome->getWarehouses();
     </tr>
     </thead>
     <tbody>
+    <?php
+
+    $uniqueIds = [];
+
+    $result['products'] = array_filter($result['products'], function($item) use (&$uniqueIds) {
+        if (!in_array($item['id'], $uniqueIds)) {
+            $uniqueIds[] = $item['id'];
+            return true;
+        }
+
+        return false;
+    });
+
+    ?>
     <?php foreach ($result['products'] as $product): ?>
         <tr>
             <td><?php echo $product['id'] ?></td>
