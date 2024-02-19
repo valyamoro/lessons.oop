@@ -9,7 +9,7 @@ class HomeRepository extends BaseRepository
 {
     public function getWareHouses(): array
     {
-        $query = 'select * from warehouses';
+        $query = 'select * from warehouses order by id asc';
 
         $this->connection->prepare($query)->execute();
 
@@ -21,7 +21,8 @@ class HomeRepository extends BaseRepository
         $query = 'SELECT p.id, w.id AS warehouse_id, p.title, p.price, w.name, pw.quantity 
           FROM product_warehouse AS pw
           JOIN products AS p ON pw.product_id = p.id
-          JOIN warehouses AS w ON pw.warehouse_id = w.id';
+          JOIN warehouses AS w ON pw.warehouse_id = w.id
+          order by id asc';
 
         $this->connection->prepare($query)->execute();
 
@@ -30,7 +31,7 @@ class HomeRepository extends BaseRepository
 
     public function getAllHistoryMovingProducts(): array
     {
-        $query = 'select * from history_product_moving';
+        $query = 'select * from history_product_moving order by id asc';
 
         $this->connection->prepare($query)->execute();
 

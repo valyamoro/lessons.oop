@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 18, 2024 at 09:28 PM
+-- Generation Time: Feb 19, 2024 at 01:56 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.9
 
@@ -38,7 +38,16 @@ CREATE TABLE `history_product_moving` (
 --
 
 INSERT INTO `history_product_moving` (`id`, `product_id`, `description`) VALUES
-(36, 1, 'склад2 продукт1 был 1 стало 0\nсклад1 продукт1 было 1 перемещено 1 стало 2');
+(78, 1, 'склад1 продукт1 был 5 стало 0\nсклад2 продукт1 было 0 перемещено 5 стало 5'),
+(79, 1, 'склад2 продукт1 был 5 стало 2\nсклад5 продукт1 было 0 перемещено 3 стало 3'),
+(80, 2, 'склад2 продукт2 был 5 стало 0\nсклад1 продукт2 было 0 перемещено 5 стало 5'),
+(81, 3, 'склад3 продукт3 был 5 стало 0\nсклад4 продукт3 было 0 перемещено 5 стало 5'),
+(82, 3, 'склад4 продукт3 был 5 стало 0\nсклад3 продукт3 было 0 перемещено 5 стало 5'),
+(83, 1, 'склад5 продукт1 был 3 стало 0\nсклад1 продукт1 было 0 перемещено 3 стало 3'),
+(84, 1, 'склад2 продукт1 был 2 стало 0\nсклад1 продукт1 было 3 перемещено 2 стало 5'),
+(85, 2, 'склад1 продукт2 был 5 стало 0\nсклад2 продукт2 было 0 перемещено 5 стало 5'),
+(86, 4, 'склад4 продукт4 был 5 стало 0\nсклад5 продукт4 было 0 перемещено 5 стало 5'),
+(87, 5, 'склад5 продукт5 был 5 стало 0\nсклад4 продукт5 было 0 перемещено 5 стало 5');
 
 -- --------------------------------------------------------
 
@@ -83,7 +92,11 @@ CREATE TABLE `product_warehouse` (
 --
 
 INSERT INTO `product_warehouse` (`id`, `product_id`, `warehouse_id`, `quantity`) VALUES
-(34164, 1, 1, 2);
+(34195, 3, 3, 5),
+(34196, 1, 1, 5),
+(34197, 2, 2, 5),
+(34198, 4, 5, 5),
+(34199, 5, 4, 5);
 
 -- --------------------------------------------------------
 
@@ -144,7 +157,7 @@ ALTER TABLE `warehouses`
 -- AUTO_INCREMENT for table `history_product_moving`
 --
 ALTER TABLE `history_product_moving`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -156,7 +169,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `product_warehouse`
 --
 ALTER TABLE `product_warehouse`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34165;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34200;
 
 --
 -- AUTO_INCREMENT for table `warehouses`
