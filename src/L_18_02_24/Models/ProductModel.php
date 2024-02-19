@@ -8,33 +8,27 @@ use App\L_18_02_24\core\Model;
 class ProductModel extends Model
 {
     public function __construct(
-        private readonly int $id,
-        private readonly int $idWareHouse,
-        private readonly string $title,
-        private readonly int $price,
+        private readonly int $productId,
+        private readonly int $fromWareHouseId,
+        private readonly int $toWareHouseId,
         private readonly int $quantity,
     ) {
         parent::__construct();
     }
 
-    public function getIdWareHouse(): int
+    public function getProductId(): int
     {
-        return $this->idWareHouse;
+        return $this->productId;
     }
 
-    public function getId(): int
+    public function getFromWareHouseId(): int
     {
-        return $this->id;
+        return $this->fromWareHouseId;
     }
 
-    public function getTitle(): string
+    public function getToWareHouseId(): int
     {
-        return $this->title;
-    }
-
-    public function getPrice(): int
-    {
-        return $this->price;
+        return $this->toWareHouseId;
     }
 
     public function getQuantity(): int
