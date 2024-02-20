@@ -21,6 +21,8 @@ if (!empty($_POST)) {
         $serviceLogHistoryProductMoving = new \App\L_18_02_24\Services\LogHistoryProductMoving\LogHistoryProductMovingService(new \App\L_18_02_24\Services\LogHistoryProductMoving\Repositories\LogHistoryProductMovingRepository());
         $serviceLogHistoryProductMoving->addHistoryProductData($data);
     }
+    \header('Location: /src/L_18_02_24/public/');
+    die;
 }
 
 $serviceHome = new App\L_18_02_24\Services\Home\HomeService(new \App\L_18_02_24\Services\Home\Repositories\HomeRepository());
