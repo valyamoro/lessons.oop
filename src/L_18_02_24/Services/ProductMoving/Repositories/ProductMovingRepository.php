@@ -55,16 +55,21 @@ class ProductMovingRepository extends BaseRepository
         return $this->getById($this->connection->lastInsertId());
     }
 
-    public function getProductData(int $productId, int $fromWareHouseId): array
+    public function getProductData(int $productId, int $fromWareHouseId): ?array
     {
-        $query = 'select product_id, warehouse_id, quantity from product_warehouse where product_id=:product_id and warehouse_id=:from_warehouse_id';
+        $query = 'select product_id, warehouse_id, quantity 
+        from product_warehouse 
+        where product_id=:product_id and warehouse_id=:from_warehouse_id
+        order by id asc';
 
         $this->connection->prepare($query)->execute([
             ':product_id' => $productId,
             ':from_warehouse_id' => $fromWareHouseId,
         ]);
 
-        return $this->connection->fetch();
+        $result = $this->connection->fetch();
+
+        return ($result !== []) ? $result : null;
     }
 
 }

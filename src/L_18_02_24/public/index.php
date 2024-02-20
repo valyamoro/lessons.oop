@@ -34,7 +34,7 @@ $warehouses = $serviceHome->getWarehouses();
 <?php if (!empty($_GET['product_id']) && !empty($_GET['warehouse_id'])): ?>
     <form action="" method="POST">
         <div class="modal-body">
-            <select name="warehouse" id="warehouse">
+            <label for="warehouse"></label><select name="warehouse" id="warehouse">
                 <?php foreach ($warehouses as $value): ?>
                     <option value="<?php echo $value['id'] ?>">
                         <?php echo $value['name'] ?>
@@ -49,6 +49,10 @@ $warehouses = $serviceHome->getWarehouses();
             Переместить
         </button>
     </form>
+<?php endif; ?>
+<?php if (!empty($_SESSION['errors'])): ?>
+<?php echo \nl2br($_SESSION['errors']); ?>
+<?php unset($_SESSION['errors']); ?>
 <?php endif; ?>
 
 <!doctype html>
